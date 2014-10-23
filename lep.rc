@@ -1,0 +1,8 @@
+alias vi=vim
+alias cp='cp -i'
+alias mv='mv -i'
+alias rm='rm -i'
+
+export LANG='zh_CN.UTF-8'
+export Lc_ALL='zh_CN.UTF-8'
+[ "N$BASH_VERSION" != "N" ] && export PS1='[\u \W]\$ '
