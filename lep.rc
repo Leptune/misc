@@ -9,3 +9,34 @@ export Lc_ALL='zh_CN.UTF-8'
 [ "N$ZSH_VERSION" != "N" ] && export PS1='%{$fg_bold[green]%}%p%n${ret_status}%m %{$fg[cyan]%}%c %#%{$reset_color%} '
 
 alias esql='mysql -uroot -proot meiya -Bse '
+
+[ "N$MACHTYPE" != "N" ] && alias updatedb=' /usr/libexec/locate.updatedb'
+
+function lpush()
+{
+    local has_sub_git=0
+    [ ! -d .git ] && echo "Not a git repository!" && return 1
+    for dir in `ls`
+    do
+        if [ -d $dir ]; then
+            while :
+            do
+                if [ -d $dir/.git ]; then
+                    has_sub_git=1
+                    rm -rf $dir/.gitbak
+                    mv $dir/.git $dir/.gitbak
+                    [ $? != 0 ] && echo "failed to mv $dir/.git $dir/.gitbak" && break
+                    git add .
+                    git commit -m 'leptune'
+                    git push origin master
+                    mv $dir/.gitbak $dir/.git
+                    [ $? != 0 ] && echo "failed to mv $dir/.gitbak $dir/.git" && break
+               fi
+               break
+            done
+           [ -d $dir/.gitbak ] && mv $dir/.gitbak $dir/.git
+        fi
+    done
+    [ $has_sub_git = 0 ] && echo "there is no git subdir!"
+    return 0
+}
