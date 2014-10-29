@@ -14,8 +14,12 @@ alias esql='mysql -uroot -proot meiya -Bse '
 
 function lpush()
 {
+    local new_cwd
     local has_sub_git=0
-    [ ! -d .git ] && echo "Not a git repository!" && return 1
+
+    [ $# = 0 ] && new_cwd='.' || new_cwd=$1
+    cd $new_cwd || return 1
+    [ ! -d .git ] && echo "Not a git repository!" && cd - && return 1
     for dir in `ls`
     do
         if [ -d $dir ]; then
@@ -38,5 +42,6 @@ function lpush()
         fi
     done
     [ $has_sub_git = 0 ] && echo "there is no git subdir!" || echo "lpush success!"
+    cd - &> /dev/null
     return 0
 }
