@@ -31,12 +31,12 @@ function lpush()
                     git push origin master
                     mv $dir/.gitbak $dir/.git
                     [ $? != 0 ] && echo "failed to mv $dir/.gitbak $dir/.git" && break
-               fi
-               break
+                fi
+                break
             done
-           [ -d $dir/.gitbak ] && mv $dir/.gitbak $dir/.git
+            [ -d $dir/.gitbak ] && mv $dir/.gitbak $dir/.git && echo "mv $dir/.gitbak $dir/.git" && has_sub_git=1
         fi
     done
-    [ $has_sub_git = 0 ] && echo "there is no git subdir!"
+    [ $has_sub_git = 0 ] && echo "there is no git subdir!" || echo "lpush success!"
     return 0
 }
