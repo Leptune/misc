@@ -1,0 +1,20 @@
+mkdir ~/Code && cd ~/Code
+git clone https://github.com/meiya-dev/server.git meiya-dev
+安装virtualbox和vagrant
+生成ssh的公私钥：mkdir ~/.ssh && cd ~/.ssh && ssh-keygen -t rsa
+将"192.168.10.10 api.meiya.com"加入/etc/hosts最后一行
+将"alias vm='ssh vagrant@192.168.10.10'"加入~/.bashrc
+source ~/.bashrc
+git clone https://github.com/leptune/homestead.git
+cd homestead
+vagrant box add laravel/homestead /path/to/laravel_homestead.box
+vagrant up
+运行命令"vm"进入vagrant
+cd ~/Code/meiya-dev
+composer install
+cp app/config/database.php app/config/development
+将app/config/development/database.php里的mysql中改为database => 'meiya',username => 'root', password => 'root', 'charset'   => 'utf8', 'collation' => 'utf8_unicode_ci'
+php artisan migrate --seed
+测试是否配置成功: (出现json数据则成功)
+	vagrant的终端中运行：http -j get api.meiya.com/v1/posts/1
+	物理主机浏览器中输入网址测试: api.meiya.com/v1/posts/1
