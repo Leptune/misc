@@ -19,7 +19,7 @@ function lpush()
 
     [ $# = 0 ] && new_cwd='.' || new_cwd=$1
     cd $new_cwd || return 1
-    [ ! -d .git ] && echo "Not a git repository!" && cd - && return 1
+    [ ! -d .git ] && echo "Not a git repository!" && cd - &> /dev/null && return 1
     for dir in `ls`
     do
         if [ -d $dir ]; then
@@ -34,11 +34,12 @@ function lpush()
                     git commit -m 'leptune'
                     git push origin master
                     mv $dir/.gitbak $dir/.git
+                    git commit -am 'leptune' &> /dev/null
                     [ $? != 0 ] && echo "failed to mv $dir/.gitbak $dir/.git" && break
                 fi
                 break
             done
-            [ -d $dir/.gitbak ] && mv $dir/.gitbak $dir/.git && echo "mv $dir/.gitbak $dir/.git" && has_sub_git=1
+            [ -d $dir/.gitbak ] && mv $dir/.gitbak $dir/.git && echo "mv $dir/.gitbak $dir/.git" && has_sub_git=1 && (git commit -am 'leptune' &> /dev/null)
         fi
     done
     [ $has_sub_git = 0 ] && echo "there is no git subdir!" || echo "lpush success!"
