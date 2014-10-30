@@ -2,15 +2,14 @@ alias vi=vim
 alias cp='cp -i'
 alias mv='mv -i'
 alias rm='rm -i'
-
-export LANG='zh_CN.UTF-8'
-export Lc_ALL='zh_CN.UTF-8'
-[ "N$BASH_VERSION" != "N" ] && export PS1='[\u \W]\$ '
-[ "N$ZSH_VERSION" != "N" ] && export PS1='%{$fg_bold[green]%}%p%n${ret_status}%m %{$fg[cyan]%}%c$(git_prompt_info)%{$fg_bold[green]%} %#%{$reset_color%} '
-
 alias esql='mysql -uroot -proot meiya -Bse '
 
+export PATH=$HOME/bin:/usr/local/bin:$PATH
+export LANG='zh_CN.UTF-8'
+export Lc_ALL='zh_CN.UTF-8'
+
 [ "N$MACHTYPE" != "N" ] && alias updatedb=' /usr/libexec/locate.updatedb'
+[ "N$BASH_VERSION" != "N" ] && export PS1='[\u \W]\$ '
 
 function lpush()
 {
