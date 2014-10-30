@@ -3,6 +3,7 @@ alias cp='cp -i'
 alias mv='mv -i'
 alias rm='rm -i'
 alias esql='mysql -uroot -proot meiya -Bse '
+alias vm='ssh vagrant@192.168.10.10'
 
 export PATH=$HOME/bin:/usr/local/bin:$PATH
 export LANG='zh_CN.UTF-8'
