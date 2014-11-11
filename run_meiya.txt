@@ -37,4 +37,4 @@
 	测试是否配置成功: (出现json数据则成功)
 		vagrant的终端中运行: http -j get api.meiya.com/v1/posts/1
 		物理主机浏览器中输入网址测试: api.meiya.com/v1/posts/1
-	可以在物理机的浏览器输入http://db来访问mysql数据库(用户名/密码: root/root)
+	可以在物理机的浏览器输入"db/"来访问mysql数据库(用户名/密码: root/root)
