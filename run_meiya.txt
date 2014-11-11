@@ -1,20 +1,40 @@
-mkdir ~/Code && cd ~/Code
-git clone https://github.com/meiya-dev/server.git meiya-dev
-安装virtualbox和vagrant
-生成ssh的公私钥：mkdir ~/.ssh && cd ~/.ssh && ssh-keygen -t rsa
-将"192.168.10.10 api.meiya.com"加入/etc/hosts最后一行
-将"alias vm='ssh vagrant@192.168.10.10'"加入~/.bashrc
-source ~/.bashrc
-git clone https://github.com/leptune/homestead.git
-cd homestead
-vagrant box add laravel/homestead /path/to/laravel_homestead.box
-vagrant up
-运行命令"vm"进入vagrant
-cd ~/Code/meiya-dev
-composer install
-cp app/config/database.php app/config/development
-将app/config/development/database.php里的mysql中改为database => 'meiya',username => 'root', password => 'root', 'charset'   => 'utf8', 'collation' => 'utf8_unicode_ci'
-php artisan migrate --seed
-测试是否配置成功: (出现json数据则成功)
-	vagrant的终端中运行：http -j get api.meiya.com/v1/posts/1
-	物理主机浏览器中输入网址测试: api.meiya.com/v1/posts/1
+1. 准备
+	$: mkdir ~/Code && cd ~/Code
+	$: git clone https://github.com/leptune/homestead
+	$: mkdir mycode && cd mycode
+	$: git clone https://github.com/meiya-dev/server.git meiya-local
+	$: mv /path/to/laravel_homestead.box ~/Code/homestead
+	$: mkdir ~/.ssh && cd ~/.ssh && ssh-keygen -t rsa
+
+2. 配置
+	如果自己的用户没有密码，请先去系统设置那边设置密码
+	$: sudo vi /etc/hosts
+	将"192.168.10.10 api.meiya.com i.meiya.com db"加入最后一行
+	将"alias vm='ssh vagrant@192.168.10.10'"加入~/.bashrc或~/.zshrc
+	$: source ~/.bashrc （或source ~/.zshrc）
+
+3. 安装
+	安装virtualbox和vagrant
+	$: cd ~/Code/homestead
+	$: vagrant box add laravel/homestead laravel_homestead.box
+	$: vagrant up
+	$: vm
+
+4. 开始
+	现在进入vagrant虚拟机了：
+	$: cd ~/Code/mycode/meiya-local
+	$: composer install
+	$: cp app/config/database.php app/config/local
+	将app/config/local/database.php里的mysql中改为:
+		'database'  => 'meiya',
+		'username'  => 'root' ,
+		'password'  => 'root' ,
+		'charset'   => 'utf8' ,
+		'collation' => 'utf8_uicode_ci'
+	$: php artisan migrate --seed
+
+5. 测试
+	测试是否配置成功: (出现json数据则成功)
+		vagrant的终端中运行: http -j get api.meiya.com/v1/posts/1
+		物理主机浏览器中输入网址测试: api.meiya.com/v1/posts/1
+	可以在物理机的浏览器输入http://db来访问mysql数据库(用户名/密码: root/root)

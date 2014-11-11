@@ -34,8 +34,8 @@ function lpush()
                     git commit -m 'leptune'
                     git push origin master
                     mv $dir/.gitbak $dir/.git
-                    git commit -am 'leptune' &> /dev/null
                     [ $? != 0 ] && echo "failed to mv $dir/.gitbak $dir/.git" && break
+                    git commit -am 'leptune' &> /dev/null
                 fi
                 break
             done
