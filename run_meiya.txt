@@ -7,11 +7,13 @@
 	$: mkdir ~/.ssh && cd ~/.ssh && ssh-keygen -t rsa
 
 2. 配置
-	如果自己的用户没有密码，请先去系统设置那边设置密码
-	$: sudo vi /etc/hosts
-	将"192.168.10.10 api.meiya.com i.meiya.com db"加入最后一行
-	将"alias vm='ssh vagrant@192.168.10.10'"加入~/.bashrc或~/.zshrc
-	$: source ~/.bashrc （或source ~/.zshrc）
+	打开系统偏好设置->用户与群组, 然后设置密码
+	打开系统偏好设置->共享, 开启远程登录(允许所有用户)
+	$: sudo echo "192.168.10.10 api.meiya.com i.meiya.com db"  /etc/hosts
+	$: echo "alias vm='ssh vagrant@192.168.10.10'" >> ~/.zshrc
+	$: source ~/.zshrc
+	$: sudo echo "allowusers wenzai@192.168.10.10" >> /etc/sshd_config (假设你的用户名为wenzai, 如不是，请修改)
+	$: cat ~/Code/homestead/id_rsa.pub >> ~/.ssh/authorized_keys
 
 3. 安装
 	安装virtualbox和vagrant
