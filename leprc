@@ -5,6 +5,9 @@ alias rm='rm -i'
 alias esql='mysql -uroot -proot meiya -Bse '
 alias vm='ssh vagrant@192.168.10.10'
 alias agp="ag -iG '.php$' -ai "
+alias ag='ag --ignore "*.js" --ignore "*.css"'
+alias tinker='php ~/Code/mycode/meiya-local/artisan tinker'
+alias vl='vim `find ~/Code/mycode/meiya-local/app/storage/logs | tail -n 1` +9999'
 
 export PATH=$HOME/bin:/usr/local/bin:$PATH
 export LANG='zh_CN.UTF-8'
