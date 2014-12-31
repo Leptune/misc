@@ -7,7 +7,14 @@ alias vm='ssh vagrant@192.168.10.10'
 alias agp="ag -iG '.php$' -ai "
 alias ag='ag --ignore "*.js" --ignore "*.css"'
 alias tinker='php ~/Code/mycode/meiya-local/artisan tinker'
-alias vl='vim `find ~/Code/mycode/meiya-local/app/storage/logs | tail -n 1` +9999'
+alias vl='vim `find ~/Code/mycode/meiya-local/app/storage/logs | tail -n 1` +1'
+alias dl='echo > `find ~/Code/mycode/meiya-local/app/storage/logs | tail -n 1`'
+alias mig='php /home/vagrant/Code/mycode/meiya-local/artisan migrate'
+alias migmk='php /home/vagrant/Code/mycode/meiya-local/artisan migrate:make'
+alias migrb='php /home/vagrant/Code/mycode/meiya-local/artisan migrate:rollback'
+alias h='cd ~/Code/mycode/meiya-local;ls'
+alias qw='php /home/vagrant/Code/mycode/meiya-local/artisan queue:work'
+alias ql='php /home/vagrant/Code/mycode/meiya-local/artisan queue:listen'
 
 export PATH=$HOME/bin:/usr/local/bin:$PATH
 export LANG='zh_CN.UTF-8'
