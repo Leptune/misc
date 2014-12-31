@@ -23,37 +23,72 @@ export Lc_ALL='zh_CN.UTF-8'
 [ "N$MACHTYPE" != "N" ] && alias updatedb=' /usr/libexec/locate.updatedb'
 [ "N$BASH_VERSION" != "N" ] && export PS1='[\u \W]\$ '
 
-function lpush()
+# 备份管理多个git项目
+function gitbackup()
 {
-    local new_cwd
-    local has_sub_git=0
-
     [ $# = 0 ] && new_cwd='.' || new_cwd=$1
+    [ ! -d $new_cwd/.git ] && echo "Not a git repository!" && return 1
+
+    suffix='lep'
+    gitbackup=".gitbak.$suffix"
+    old_cwd=`pwd`
     cd $new_cwd || return 1
-    [ ! -d .git ] && echo "Not a git repository!" && cd - &> /dev/null && return 1
+
     for dir in `ls`
     do
-        if [ -d $dir ]; then
-            while :
+        if [ -d $dir/.git ]; then
+            # 将项目的忽略文件也保存备份起来
+            for f in `find $dir -name '.gitignore'`
             do
-                if [ -d $dir/.git ]; then
-                    has_sub_git=1
-                    rm -rf $dir/.gitbak
-                    mv $dir/.git $dir/.gitbak
-                    [ $? != 0 ] && echo "failed to mv $dir/.git $dir/.gitbak" && break
-                    git add .
-                    git commit -m 'leptune'
-                    git push origin master
-                    mv $dir/.gitbak $dir/.git
-                    [ $? != 0 ] && echo "failed to mv $dir/.gitbak $dir/.git" && break
-                    git commit -am 'leptune' &> /dev/null
-                fi
-                break
+                mv -f $f $f.$suffix
             done
-            [ -d $dir/.gitbak ] && mv $dir/.gitbak $dir/.git && echo "mv $dir/.gitbak $dir/.git" && has_sub_git=1 && (git commit -am 'leptune' &> /dev/null)
+            rm -rf $dir/$gitbackup
+            mv $dir/.git $dir/$gitbackup
         fi
     done
-    [ $has_sub_git = 0 ] && echo "there is no git subdir!" || echo "lpush success!"
-    cd - &> /dev/null
+
+    git add -A
+    git commit -m 'backup git project'
+	git config push.default current
+    git push
+
+    echo 'backup git project success!'
+    cd $old_cwd
     return 0
+}
+
+# 恢复备份的git项目
+function gitrestore()
+{
+    [ $# = 0 ] && new_cwd='.' || new_cwd=$1
+    [ ! -d $new_cwd/.git ] && echo "Not a git repository!" && return 1
+
+    suffix='lep'
+    gitbackup=".gitbak.$suffix"
+    old_cwd=`pwd`
+    cd $new_cwd || return 1
+
+    for dir in `ls`
+    do
+        if [ -d $dir/$gitbackup ]; then
+            mv $dir/$gitbackup $dir/.git
+        fi
+        # 恢复ignore文件
+        for f in `find $dir -name .gitignore.$suffix`
+        do
+            mv -f $f `dirname $f`/.gitignore
+        done
+    done
+
+    echo 'restore git project success!'
+    cd $old_cwd
+    return 0
+}
+
+# 备份和恢复
+function gitbr()
+{
+    gitbackup  $1
+    gitrestore $1
+    return 0;
 }
