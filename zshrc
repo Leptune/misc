@@ -12,3 +12,4 @@ export PS1='╭─%{$terminfo[bold]$fg[green]%}%n@%m%{$reset_color%} %{$terminfo
 export PATH="$PATH:$HOME/.rvm/bin" # Add RVM to PATH for scripting
 
 alias rake="noglob rake"
+alias vm='ssh vagrant@192.168.10.10'
